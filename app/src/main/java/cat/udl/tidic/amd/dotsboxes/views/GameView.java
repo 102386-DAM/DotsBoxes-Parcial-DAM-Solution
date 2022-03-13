@@ -137,7 +137,6 @@ public class GameView extends View {
             if (square.isCompleted().get()){
 
                 Log.d(TAG,square.getOwner().alias);
-                Log.d(TAG,square.getOwner().alias);
 
                 paint.setTextSize(300);
                 paint.setColor(square.getOwner().getColor());
@@ -205,6 +204,8 @@ public class GameView extends View {
                         Log.d(TAG,game.currentPlayer().getName() +"->" +
                                 game.currentPlayer().getSquares() + " squares");
                     }
+                }else{
+                    endTurn=false;
                 }
 
                 invalidate();

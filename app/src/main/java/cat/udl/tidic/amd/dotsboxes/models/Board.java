@@ -46,7 +46,7 @@ public class Board {
             x = x + xDistance;
         }
 
-        Log.d(TAG, this.points.toString());
+        //Log.d(TAG, this.points.toString());
 
         // Use the points to build squares
 
@@ -68,7 +68,7 @@ public class Board {
                 initColIndex = initColIndex + 1;
                 initSquareIndex = initColIndex * (M);
             }
-            Log.d(TAG, "Square " + i +":\n"+ P1  + "-" + P2 +"\n"+ P4  + "-" + P3);
+            //Log.d(TAG, "Square " + i +":\n"+ P1  + "-" + P2 +"\n"+ P4  + "-" + P3);
         }
 
 
@@ -92,11 +92,11 @@ public class Board {
         // Check if it is a valid line
         if ( line.first.equals(line.second)){
             isValid.set(false);
-            Log.d(TAG,"PA == PB");
+            Log.d(TAG,"Not valid line -> PA == PB");
         }
 
         // Check if the line is between adjacent points
-        if ( !((line.first.x == line.second.x + xDistance
+        else if ( !((line.first.x == line.second.x + xDistance
                 || line.first.x == line.second.x-xDistance
                 || line.first.y == line.second.y+yDistance
                 || line.first.y == line.second.y-yDistance)
@@ -104,19 +104,20 @@ public class Board {
                 || line.first.y == line.second.y))) {
             isValid.set(false);
             Log.d(TAG,"Not a valid line (distance > 1 point or diagonal) ");
-        }
+        } else {
 
-        // Check that line is available
-        Line cl = new Line(line.first, line.second);
-        squares.forEach( (Square square) -> {
-           square.lines.forEach((Line l) -> {
-               // Lina ocupada
-               if (l.equals(cl) && l.owner!=null){
-                   isValid.set(false);
-                   Log.d(TAG,"Not a valid line (ocupada) ");
-               }
-           });
-        });
+            // Check that line is available
+            Line cl = new Line(line.first, line.second);
+            squares.forEach((Square square) -> {
+                square.lines.forEach((Line l) -> {
+                    // Lina ocupada
+                    if (l.equals(cl) && l.owner != null) {
+                        isValid.set(false);
+                        Log.d(TAG, "Not a valid line (ocupada) ");
+                    }
+                });
+            });
+        }
 
         return isValid.get();
     }
@@ -135,7 +136,7 @@ public class Board {
                         squareIsCompleted.set(true);
                     }
                 }
-                Log.d(TAG,l.toString());
+                //Log.d(TAG,l.toString());
             });
         });
         return squareIsCompleted.get();
@@ -147,11 +148,11 @@ public class Board {
         point.set(null);
         points.forEach((Point p) -> {
             // Rule ->  needs to be a point of the board
-            Log.d("TAG", current + "=>" + p);
-            if ( ((current.x <= p.x + 15 && current.x >= p.x - 15)
-                    && (current.y <= p.y + 15 && current.y >= p.y - 15))
+            //Log.d("TAG", current + "=>" + p);
+            if ( ((current.x <= p.x + 30 && current.x >= p.x - 30)
+                    && (current.y <= p.y + 30 && current.y >= p.y - 30))
             ) {
-                Log.d("TAG", "yes");
+                //Log.d("TAG", "yes");
                 point.set(p);
             }
         });
