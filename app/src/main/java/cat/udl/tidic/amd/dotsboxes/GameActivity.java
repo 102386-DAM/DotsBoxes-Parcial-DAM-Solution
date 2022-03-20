@@ -19,12 +19,15 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        // @Didac: Aquesta funció va eliminada en el repo del parcial
         initDataBinding();
         gameView = (GameView) findViewById(R.id.gameView);
         gameView.setGameViewModel(gameViewModel);
+        //
 
     }
 
+    // @Didac: Aquesta funció va eliminada en el repo del parcial
     private void initDataBinding() {
         ActivityGameBinding activityGameBinding =
                 DataBindingUtil.setContentView(this, R.layout.activity_game);
@@ -33,4 +36,5 @@ public class GameActivity extends AppCompatActivity {
         // Required to update UI with LiveData
         activityGameBinding.setLifecycleOwner(this);
     }
+    //
 }

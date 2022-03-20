@@ -37,24 +37,11 @@ public class GameView extends View {
     Game game;
     Board board;
 
-   private int xMargin, yMargin, yDistance, xDistance;
+    private int yDistance;
+    private int xDistance;
    private List<Point> points;
-
-   // Ho haurem de guardar en una ronda d'un jugador
-    Point pi = null;
-    Point pf = null;
-
-    Pair currentPair = null;
-
-    private List<Pair<Point,Point>> pointsPlayer1;
-    private List<Pair<Point,Point>> pointsPlayer2;
-
-    private List<Pair> squares;
-
-    private Player player = null;
-    private boolean endTurn=false;
-
-    protected Paint paint;
+   private boolean endTurn=false;
+   protected Paint paint;
 
 
     public GameView(Context context, @Nullable AttributeSet attrs) {
@@ -62,21 +49,15 @@ public class GameView extends View {
         points = new ArrayList<>();
 
         //init board
-        yDistance=getMeasuredHeight()/M;
-        xDistance=getMeasuredWidth()/N;
-        xMargin = xDistance/2;
-        yMargin = yDistance/2;
-        board = new Board(xMargin,yMargin,xDistance,yDistance,M,N);
+        board = new Board(M,N);
 
         //init game
         game = new Game(board);
 
-        // This goes to logic
-        pointsPlayer1 = new ArrayList<>();
-        pointsPlayer2 = new ArrayList<>();
-
+        //init the graphics
         paint = new Paint();
 
+        game = new Game(board);
     }
 
 
@@ -85,28 +66,13 @@ public class GameView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        //yDistance=getMeasuredHeight()/M;
-        //xDistance=getMeasuredWidth()/N;
-        //xMargin = xDistance/2;
-        //yMargin = yDistance/2;
-
-        //Log.d(TAG, "yDistance = " + yDistance);
-        //Log.d(TAG, "xDistance = " + xDistance);
-
-        //Log.d(TAG,"Lines P1="+pointsPlayer1.toString());
-        //Log.d(TAG,"Lines P2="+pointsPlayer2.toString());
-
         if (game.currentPlayer() == null){
-            //init board
             yDistance=getMeasuredHeight()/M;
             xDistance=getMeasuredWidth()/N;
-            xMargin = xDistance/2;
-            yMargin = yDistance/2;
-            board = new Board(xMargin,yMargin,xDistance,yDistance,M,N);
-
-            //init game
-            //this.gameViewModel.setCurrentGame(game);
-            game = new Game(board);
+            int xMargin = xDistance / 2;
+            int yMargin = yDistance / 2;
+            this.game.board.setBoardDimensions(xMargin, yMargin, xDistance,yDistance);
+            this.game.board.build();
             this.gameViewModel.setCurrentGame(game);
         }else{
             this.gameViewModel.setCurrentGame(game);
@@ -136,8 +102,6 @@ public class GameView extends View {
             });
             if (square.isCompleted().get()){
 
-                Log.d(TAG,square.getOwner().alias);
-
                 paint.setTextSize(300);
                 paint.setColor(square.getOwner().getColor());
 
@@ -156,8 +120,6 @@ public class GameView extends View {
                 game.nextPlayer();
             }
         }
-
-        Log.d(TAG,"Player playing="+game.currentPlayer().getName());
     }
 
     @Override
@@ -172,28 +134,21 @@ public class GameView extends View {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public boolean onTouchEvent(MotionEvent event) {
-        //Log.i(TAG,"f==>"+event);
-        //Log.i(TAG,"points=>"+points);
-
         int x = (int) event.getX();
         int y = (int) event.getY();
         Point current = new Point();
         current.set(x, y);
 
         Point p = board.getPoint(current);
-        Log.d(TAG,"Currnet point:"+p);
 
         // The point is valid p is different of null
         if (p != null) {
             if (game.currentPlayer().election == null) {
                 // First click
-                Log.d(TAG,"First Click");
                 game.currentPlayer().election = new Pair<>(p, new Point());
             } else {
                 //Second click
-                Log.d(TAG,"Second Click");
                 game.currentPlayer().election.second.set(p.x, p.y);
-                Log.d(TAG, "isValidLine="+board.isValidElection(game.currentPlayer().election) );
                 if (board.isValidElection(game.currentPlayer().election)) {
                     // if no square -> update->False and endTurn=True
                     // if square -> update -> True and endTurn=False
@@ -201,8 +156,6 @@ public class GameView extends View {
 
                     if (!endTurn){
                         game.currentPlayer().setSquares(game.currentPlayer().getSquares() + 1);
-                        Log.d(TAG,game.currentPlayer().getName() +"->" +
-                                game.currentPlayer().getSquares() + " squares");
                     }
                 }else{
                     endTurn=false;

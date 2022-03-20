@@ -38,36 +38,8 @@ public class Square {
         lines.add(new Line(P3,P1));
     }
 
-    public Point getP1() {
-        return P1;
-    }
-
-    public void setP1(Point p1) {
-        P1 = p1;
-    }
-
     public Point getP2() {
         return P2;
-    }
-
-    public void setP2(Point p2) {
-        P2 = p2;
-    }
-
-    public Point getP3() {
-        return P3;
-    }
-
-    public void setP3(Point p3) {
-        P3 = p3;
-    }
-
-    public Point getP4() {
-        return P4;
-    }
-
-    public void setP4(Point p4) {
-        P4 = p4;
     }
 
     public Player getOwner() {
@@ -93,10 +65,4 @@ public class Square {
 
     }
 
-    @NonNull
-    @Override
-    public String toString(){
-        return String.format("%s - %s - %s - %s",P1.toString(),P2.toString(),
-                P4.toString(),P3.toString());
-    }
 }

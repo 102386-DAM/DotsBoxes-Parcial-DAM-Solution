@@ -50,15 +50,4 @@ public class Player {
         isPlaying = playing;
     }
 
-    public void setColor(int color) {
-        this.color = color;
-    }
-
-    public Pair<Point, Point> getElection() {
-        return election;
-    }
-
-    public void setElection(Pair<Point, Point> election) {
-        this.election = election;
-    }
 }

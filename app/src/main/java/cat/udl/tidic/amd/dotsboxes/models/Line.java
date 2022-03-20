@@ -51,14 +51,8 @@ public class Line {
         Line c = (Line) o;
 
 
-        boolean isEqual =  (c.getPA().equals( this.PA) || c.getPA().equals( this.PB)) &&
+        return (c.getPA().equals( this.PA) || c.getPA().equals( this.PB)) &&
                 (c.getPB().equals( this.PA) || c.getPB().equals( this.PB));
-
-        //Log.d(TAG, c + "=?"+ this + "->"+isEqual);
-
-
-
-        return isEqual;
     }
 
 
