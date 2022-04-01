@@ -147,10 +147,12 @@ public class GameView extends View {
         // The point is valid p is different of null
         if (p != null) {
             if (game.currentPlayer().election == null) {
-                // First click
+                // First clic
                 game.currentPlayer().election = new Pair<>(p, new Point());
+                Log.d("Primer",p.toString());
             } else {
                 //Second click
+                Log.d("Segon",p.toString());
                 game.currentPlayer().election.second.set(p.x, p.y);
                 MoveState moveState = board.isValidElection(game.currentPlayer().election);
                 if (moveState.isValid) {
