@@ -11,6 +11,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -22,6 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import cat.udl.tidic.amd.dotsboxes.models.Board;
 import cat.udl.tidic.amd.dotsboxes.models.Game;
 import cat.udl.tidic.amd.dotsboxes.models.Line;
+import cat.udl.tidic.amd.dotsboxes.models.MoveState;
 import cat.udl.tidic.amd.dotsboxes.models.Player;
 import cat.udl.tidic.amd.dotsboxes.models.Square;
 import cat.udl.tidic.amd.dotsboxes.viewmodels.GameViewModel;
@@ -58,6 +60,7 @@ public class GameView extends View {
         paint = new Paint();
 
         game = new Game(board);
+
     }
 
 
@@ -149,7 +152,8 @@ public class GameView extends View {
             } else {
                 //Second click
                 game.currentPlayer().election.second.set(p.x, p.y);
-                if (board.isValidElection(game.currentPlayer().election)) {
+                MoveState moveState = board.isValidElection(game.currentPlayer().election);
+                if (moveState.isValid) {
                     // if no square -> update->False and endTurn=True
                     // if square -> update -> True and endTurn=False
                     endTurn=!board.update(game.currentPlayer());
@@ -158,6 +162,8 @@ public class GameView extends View {
                         game.currentPlayer().setSquares(game.currentPlayer().getSquares() + 1);
                     }
                 }else{
+                    Toast.makeText(this.getContext(),moveState.message, Toast.LENGTH_LONG).show();
+
                     endTurn=false;
                 }
 

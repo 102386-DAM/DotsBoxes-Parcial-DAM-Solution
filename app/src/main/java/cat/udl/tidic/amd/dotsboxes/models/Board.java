@@ -79,13 +79,17 @@ public class Board {
 
     // @Didac: Aquesta funció va buida en el repo del parcial farem return true
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public boolean isValidElection(Pair<Point,Point> line){
+    public MoveState isValidElection(Pair<Point,Point> line){
+
+        MoveState moveState = new MoveState();
+
         AtomicBoolean isValid = new AtomicBoolean(true);
 
         // Check if it is a valid line
         if ( line.first.equals(line.second)){
             isValid.set(false);
             Log.d(TAG,"Not valid line -> PA == PB");
+            moveState.message="Not valid move -> PA must be different from PB";
         }
 
         // Check if the line is between adjacent points
@@ -97,6 +101,7 @@ public class Board {
                 || line.first.y == line.second.y))) {
             isValid.set(false);
             Log.d(TAG,"Not a valid line (distance > 1 point or diagonal) ");
+            moveState.message="Not a valid move -> The distance between PA and PB is greater than 1 or they points are in diagonal.";
         } else {
 
             // Check that line is available
@@ -107,12 +112,13 @@ public class Board {
                     if (l.equals(cl) && l.owner != null) {
                         isValid.set(false);
                         Log.d(TAG, "Not a valid line (ocupada) ");
+                        moveState.message="Not a valid move ->  The line is owned by the other player";
                     }
                 });
             });
         }
-
-        return isValid.get();
+        moveState.isValid = isValid.get();
+        return moveState;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -150,4 +156,7 @@ public class Board {
         return point.get();
     }
 
+    public List<Point> getPoints() {
+        return points;
+    }
 }
